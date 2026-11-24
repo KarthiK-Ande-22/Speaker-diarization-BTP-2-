@@ -10,3 +10,6 @@ uploads/
 # Website build and packages (npm install / npm run build make them again)
 web/frontend/node_modules/
 web/frontend/dist/
+
+# Docs are kept on this computer only
+*.md
