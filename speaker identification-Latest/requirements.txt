@@ -1,0 +1,12 @@
+# Step 1 - diarization (also needs ffmpeg: sudo apt install ffmpeg)
+pyannote.audio>=4.0
+torch
+soundfile
+numpy
+praat-parselmouth   # Step 2 - speech features (Praat in Python)
+transformers        # Step 4 - medical NER (d4data/biomedical-ner-all)
+openai-whisper      # Step 3 - transcription (Whisper medium)
+nltk                # Step 4 - noun check (then: python -m nltk.downloader averaged_perceptron_tagger_eng)
+opencv-python       # Step 6 - face detection and fingerprints (YuNet, SFace models in 06_video/models)
+scikit-learn        # Step 6 - grouping faces into 2 people
+sarvamai            # Step 7 - LLM decision (needs SARVAM_API_KEY in .env)

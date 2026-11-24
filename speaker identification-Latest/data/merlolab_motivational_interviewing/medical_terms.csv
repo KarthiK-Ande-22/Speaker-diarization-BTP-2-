@@ -1,0 +1,14 @@
+turn,speaker,sentence,term,type,side,question,score,sentence_text
+1,A,1,antibiotics,medication,doctor,0,1.0,So I wrote a prescription for antibiotics for Aiden.
+1,A,3,infections,condition,patient,0,0.64,I'm a little bit concerned looking through his chart at how many ear infections he's had recently.
+2,B,3,10 years,history,patient,0,0.796,But I've been smoking for 10 years except when I was pregnant with him.
+6,B,2,infections,history,patient,0,0.686,I've read those things about ear infections and asthma and stuff.
+6,B,2,asthma,history,patient,0,0.925,I've read those things about ear infections and asthma and stuff.
+6,B,3,ear infections,condition,patient,0,0.939,But other kids have ear infections and their parents don't smoke.
+7,A,1,smoking,condition,patient,0,0.901,So on the one hand you're worried about how your smoking might be affecting him and on the other hand you're not so sure if it's really the smoking that's causing these problems.
+8,B,3,problems,history,patient,0,0.552,He hasn't had a lot of other problems that his other friends have.
+13,B,4,going into labor early,history,patient,0,0.962,"I just couldn't imagine him not being born or going into labor early and him having problems and stuff like that, all the stuff that they talk about with women who smoke."
+13,B,4,problems,history,patient,0,0.978,"I just couldn't imagine him not being born or going into labor early and him having problems and stuff like that, all the stuff that they talk about with women who smoke."
+16,A,1,risks,test,doctor,0,0.98,risks were so scary then that you were able to stop.
+31,A,3,successful quitting in the past,history,patient,0,0.99,You have been successful quitting in the past and right now you're just feeling a little bit hesitant about your ability to do it.
+35,A,3,medications,medication,doctor,0,0.999,There's different medications you can try.

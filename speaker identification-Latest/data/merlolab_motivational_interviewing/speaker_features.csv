@@ -1,0 +1,11 @@
+feature,A,B,A_minus_B,expected_higher,doctor_by_this_feature
+talk_share,0.4534,0.5466,-0.0932,doctor,B
+median_turn_s,4.286,6.48,-2.194,patient,A
+turn_length_cv,1.046,0.966,0.0801,doctor,A
+interruptions_per_min,0.1975,0.1975,0.0,doctor,-
+initiative_share,0.3333,0.6667,-0.3333,doctor,B
+response_gap_s,0.31,0.15,0.16,patient,B
+pitch_variation_st,2.8846,2.8345,0.0501,patient,B
+rising_end_share,0.2143,0.4615,-0.2473,decide from data,-
+articulation_rate,4.2783,3.6395,0.6388,doctor,A
+pause_rate_per_min,11.114,18.0707,-6.9567,patient,A

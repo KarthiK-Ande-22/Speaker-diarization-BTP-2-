@@ -1,0 +1,81 @@
+{
+  "frames_searched_per_second": 10,
+  "faces_found": 4993,
+  "faces_per_person": {
+    "P1": 2447,
+    "P2": 2508
+  },
+  "frames_with_one_person": 1115,
+  "frames_with_both": 1920,
+  "link": {
+    "on_screen": {
+      "votes P1,P2 x A,B": [
+        [
+          493,
+          0
+        ],
+        [
+          16,
+          440
+        ]
+      ],
+      "mapping": {
+        "P1": "A",
+        "P2": "B"
+      },
+      "confidence": 0.984
+    },
+    "mouth": {
+      "votes P1,P2 x A,B": [
+        [
+          260,
+          283
+        ],
+        [
+          248,
+          241
+        ]
+      ],
+      "mapping": {
+        "P1": "B",
+        "P2": "A"
+      },
+      "confidence": 0.514
+    },
+    "both": {
+      "votes P1,P2 x A,B": [
+        [
+          753,
+          283
+        ],
+        [
+          264,
+          681
+        ]
+      ],
+      "mapping": {
+        "P1": "A",
+        "P2": "B"
+      },
+      "confidence": 0.723
+    }
+  },
+  "person_to_speaker": {
+    "P1": "A",
+    "P2": "B"
+  },
+  "clip": {
+    "P1": {
+      "medical_clothing": 0.997277959025636,
+      "stethoscope": 0.9649834115894473,
+      "notes_or_computer": 0.96659579301367,
+      "pictures": 245
+    },
+    "P2": {
+      "medical_clothing": 0.6632919004487414,
+      "stethoscope": 0.21067594327483205,
+      "notes_or_computer": 0.9119659716323498,
+      "pictures": 248
+    }
+  }
+}

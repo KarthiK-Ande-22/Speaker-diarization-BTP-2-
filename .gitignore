@@ -1,0 +1,12 @@
+# Never commit: the API key file, the virtual environment, Python caches
+.env
+.venv/
+__pycache__/
+*.pyc
+
+# Recordings and audio are not committed (other people's videos; possible patient audio)
+*.mp4
+*.mp3
+*.aac
+*.m4a
+*.wav
