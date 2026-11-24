@@ -1,5 +1,0 @@
-feature,A,B,A_minus_B,expected_higher,doctor_by_this_feature
-medical_clothing_prob,0.9973,0.6633,0.334,doctor,A
-stethoscope_prob,0.965,0.2107,0.7543,doctor,A
-notes_or_computer_prob,0.9666,0.912,0.0546,doctor,A
-face_link_confidence,0.723,0.723,0,-,-

@@ -3,7 +3,7 @@
 Diarization gives two speakers, **A** (speaks first) and **B**. This step answers one question:
 *using only how they speak (not what they say), which one sounds like the doctor?*
 
-Text, medical terms and image come in later steps. Here we only describe **what can be measured from
+Medical terms and video come in later steps. Here we only describe **what can be measured from
 speech**, why it should help, and how reliable each cue is. Coding comes after we agree on this list.
 
 ---
@@ -79,7 +79,7 @@ question intonation. So we measure it and let the data decide the direction.
 | Speech rate | syllables ÷ total turn time (pauses included) | doctor | hypothesis |
 | Pause rate | silent pauses ≥ 0.25 s inside the speaker's own turns, per minute | patient | our data agree (1 of 1 usable recording) |
 | Mean pause length | seconds | patient | our data: about equal |
-| Hesitation sounds | "um", "aa", "ante", repeated words, restarts | patient (recalling symptoms) | hypothesis; mostly needs a word-for-word transcript, so it belongs to the text step |
+| Hesitation sounds | "um", "aa", "ante", repeated words, restarts | patient (recalling symptoms) | hypothesis; mostly needs a word-for-word transcript (not used) |
 
 Syllables are counted **without a transcript**: each syllable is a peak in loudness surrounded by dips,
 and it must be voiced (de Jong & Wempe, 2009). The method was checked on Dutch. Telugu has a regular

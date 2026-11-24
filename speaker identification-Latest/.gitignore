@@ -1,3 +1,12 @@
 .env
 .venv/
 __pycache__/
+
+# Made by running the pipeline: not code, never committed
+data/
+results/
+uploads/
+
+# Website build and packages (npm install / npm run build make them again)
+web/frontend/node_modules/
+web/frontend/dist/

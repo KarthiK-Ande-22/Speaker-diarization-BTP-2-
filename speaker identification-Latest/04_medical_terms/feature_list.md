@@ -67,3 +67,23 @@ the past". The noun rule also dropped "ear" (in "ear infections"), once for each
   is already downloaded.
 * Terms go to whoever diarization says spoke them, so diarization errors carry over (see the known
   error at the end of MerloLab).
+
+## Second model to choose: ElevenLabs entity detection (optional, in the cloud)
+
+`--model scribe`, or "Medical terms: ElevenLabs entity detection" on the website. ElevenLabs Scribe marks medical
+terms in its own transcript (entity detection, category `phi`). This is part of the same Scribe request as Steps 1 and 3,
+so it needs `ELEVENLABS_API_KEY`, and the audio is sent to ElevenLabs. Each term is given to the speaker talking at
+that moment (Step 1), and the same M1–M4 are computed from it.
+
+| ElevenLabs type | Saved as | Side |
+|---|---|---|
+| `drug` | medication | doctor |
+| `medical_process` | test or treatment | doctor |
+| `clinical_measurement` | measurement | doctor |
+| `condition` | condition | patient |
+| `injury` | injury | patient |
+
+It has no symptoms, body parts, history or dosage, so M2 and M3 get fewer terms than with the NER model. It gives no
+confidence score (the `score` column is empty). First check on MerloLab (11.2–315 s, Scribe's transcript): 9 terms
+(antibiotics, medications, medicine, ear infections, asthma, pregnant), all real medical terms, against 13 for the NER
+model with about 6 false positives.

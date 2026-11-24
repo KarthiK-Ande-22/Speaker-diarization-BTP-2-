@@ -6,14 +6,39 @@ Each step is finished and checked before the next one starts. Every test uses on
 
 | Step | Folder | What it does | Status |
 |---|---|---|---|
+| 0 | `00_clean_audio/` | optional, off by default: remove background noise (ElevenLabs Voice Isolator) | **coded** |
 | 1 | `01_diarization/` | split the recording into Speaker A (speaks first) and Speaker B, keeping overlapping speech; voice re-check | **done** |
 | 2 | `02_speech_features/` | the top 10 speech features (timing, pitch, speed, pauses) | **done** (see `feature_list.md`) |
 | 3 | `03_transcription/` | speech to text with Whisper medium; every word given to A or B | **done** (MerloLab: 954 words, 7.8 min) |
 | 4 | `04_medical_terms/` | medical terms per speaker with NER (d4data/biomedical-ner-all), features M1–M4 | **done** (see `feature_list.md`) |
-| 5 | `05_text_context/` | questions, instructions, advice, empathy, uncertainty, I/you/we, question-answer initiative, opening/closing | **done** (see `feature_list.md`) |
-| 6 | `06_video/` | who is on screen, linked to A/B; white coat, stethoscope, notes (YuNet, SFace, CLIP) | **done** (see `feature_list.md`) |
-| 7 | `07_decision/` | the LLM (Sarvam) reads the feature cards and says who is the doctor, with a confidence | **done** (`approach.md`, `llm_decision.py`) |
-| 8 | `08_experiments/` | the LLM on all 15 combinations of speech / medical / text / video, plus a transcript comparison | **coded** (`llm_combinations.py`) |
+| 5 | `05_video/` | who is on screen, linked to A/B; white coat, stethoscope, notes, hospital gown / bed (YuNet, SFace, CLIP) | **done** (see `feature_list.md`) |
+| 6 | `06_decision/` | the LLM (Sarvam) reads the feature cards and says who is the doctor, with a confidence | **done** (`approach.md`, `llm_decision.py`) |
+| 7 | `07_experiments/` | the LLM on all 7 combinations of speech / medical terms / video, plus a transcript comparison | **coded** (`llm_combinations.py`) |
+
+## Model choices (local by default, ElevenLabs optional)
+
+Every step runs on this computer by default. Four parts can use an ElevenLabs model instead (in the cloud: the
+audio is sent to ElevenLabs; needs `ELEVENLABS_API_KEY` in `.env`). The code is in `01_diarization/elevenlabs_api.py`.
+
+| Part | Default (this computer) | ElevenLabs choice | Command line |
+|---|---|---|---|
+| Step 0, clean audio | off | Voice Isolator | `python 00_clean_audio/clean_audio.py file.mp4` |
+| Step 1, who spoke when | pyannote community-1 + voice re-check | Scribe (one speaker per word, at most 2 speakers) | `diarize.py ... --model scribe` |
+| Step 3, transcript | Whisper medium | Scribe v2 Medical, optional key terms | `transcribe.py --model scribe --keyterms "a, b"` |
+| Step 4, medical terms | d4data biomedical NER | Scribe's entity detection (medical category): drugs, conditions, injuries, procedures and tests, measurements; no symptoms, body parts or history | `medical_terms.py --model scribe` |
+
+All Scribe choices share one request per recording (`elevenlabs_scribe.json`, model `scribe_v2_medical`, with entity
+detection). Whichever model finds the speakers, Speaker A is whoever talks first, and the transcript's words and the
+medical terms are always given to the speakers found in Step 1. On the website the choices are on the upload form, and a recording's page has "Run again with other
+models", which makes a new recording from the same file and reuses the saved results that still apply.
+
+## Website
+
+Upload a recording and see every stage's output and the final decision in the browser:
+
+```bash
+python web/server/app.py        # then open http://127.0.0.1:5000  (build it once first: see web/README.md)
+```
 
 ## Setup
 
@@ -84,26 +109,16 @@ Runs `d4data/biomedical-ner-all` on every sentence (offline), keeps terms that c
 `04_medical_terms/feature_list.md`. Output: `medical_terms.csv` (every term with its speaker, type and
 model confidence) and `medical_features.csv` (M1–M4 for A, B and A − B).
 
-## Step 5: text and context
+## Step 5: video
 
 ```bash
-python 05_text_context/text_context.py
-```
-
-Labels every sentence of the transcript with English phrase patterns and the NLTK tagger, then computes the 10
-features in `05_text_context/feature_list.md`. Output: `text_sentences.csv` (every sentence and its labels) and
-`text_features.csv` (the 10 features for A, B and A − B).
-
-## Step 6: video
-
-```bash
-python 06_video/video_features.py
+python 05_video/video_features.py
 ```
 
 Finds faces 10 times per second (YuNet), groups them into 2 people (SFace + k-means), links each person to
 Speaker A or B (who is on screen while each one talks, plus mouth movement), and describes each person with
-CLIP (white coat, stethoscope, notes). Output: `video_faces.csv`, `video_people.jpg` (check the grouping by
-eye), `video_info.json`, `video_features.csv`. Details in `06_video/feature_list.md`.
+CLIP (white coat, stethoscope, notes, hospital gown / bed). Output: `video_faces.csv`, `video_people.jpg` (check the grouping by
+eye), `video_info.json`, `video_features.csv`. Details in `05_video/feature_list.md`.
 
 ## Voice re-check (part of Step 1)
 
@@ -112,13 +127,13 @@ embedding model) and is moved to the other speaker if it sounds closer to that s
 result stays in `pyannote.rttm`; the corrected result is `diarization.rttm`, and every checked piece is listed in
 `voice_recheck.csv`. MerloLab: 71 pieces checked, 3 moved (all correct: patient replies inside the doctor's last turn).
 
-## Step 7 and 8: LLM decision and experiments
+## Step 6 and 7: LLM decision and experiments
 
 ```bash
-python 08_experiments/llm_combinations.py     # needs SARVAM_API_KEY in .env (this folder); --redo asks again
+python 07_experiments/llm_combinations.py     # needs SARVAM_API_KEY in .env (this folder); --redo asks again
 ```
 
 Builds a feature card per group, asks Sarvam who is the doctor for every combination of groups (both speaker orders,
 3 answers each), and writes `results/llm_sarvam/summary.md`. Every question and answer is kept in
 `results/llm_sarvam/calls_<recording>.jsonl`. The features (and, for the transcript comparison, the transcript) are sent
-to Sarvam. Details in `07_decision/approach.md`.
+to Sarvam. Details in `06_decision/approach.md`.

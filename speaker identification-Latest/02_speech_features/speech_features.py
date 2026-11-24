@@ -4,6 +4,8 @@ Input : data/<id>/turns.csv, diarization.rttm, audio_16k.wav, info.json   (made 
 Output: data/<id>/turn_features.csv     one row per turn: pitch, rising end, syllables, pauses
         data/<id>/speaker_features.csv  the 10 features: value for A, value for B, A - B
 
+Pitch, pauses and speed always use the original audio (audio_16k.wav), even when Step 0 cleaned a copy.
+
 Run (from the "speaker identification-Latest" folder):
     python 02_speech_features/speech_features.py        # every recording in recordings.csv
 """
