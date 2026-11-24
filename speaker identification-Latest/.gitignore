@@ -11,5 +11,6 @@ uploads/
 web/frontend/node_modules/
 web/frontend/dist/
 
-# Docs are kept on this computer only
+# Docs are kept on this computer only, except the main README
 *.md
+!/README.md
