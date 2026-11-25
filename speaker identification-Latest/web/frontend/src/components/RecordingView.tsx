@@ -96,7 +96,8 @@ export default function RecordingView({ id, chosen }: { id: string; chosen: stri
             </dd>
             <dt>Confidence</dt>
             <dd>
-              <span className="mono">{percent(final.confidence)}</span> <span className="muted small">({final.agreement} agree)</span>
+              <span className="mono">{percent(final.confidence)}</span>
+              {final.answers > 1 && <span className="muted small"> ({final.agreement} agree)</span>}
             </dd>
           </dl>
         )}

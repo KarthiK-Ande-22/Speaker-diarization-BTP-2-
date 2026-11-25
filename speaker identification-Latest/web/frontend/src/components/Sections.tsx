@@ -233,8 +233,11 @@ function Video({ id, data, roles }: { id: string; data: NonNullable<Results["vid
 
 // ---------------------------------------------------------------- 6. decision
 
+const GROUP_COUNT: Record<number, string> = { 1: "single", 2: "pair", 3: "all three" };
+
 function Decision({ data }: { data: NonNullable<Results["decision"]> }) {
   const final = data.final;
+  const repeated = data.combinations.some((c) => c.answers > 1);
   const doctor = final && final.decision !== "-" ? final.decision : null;
   return (
     <>
@@ -262,8 +265,11 @@ function Decision({ data }: { data: NonNullable<Results["decision"]> }) {
                     <span style={{ width: percent(final.confidence) }} />
                   </span>
                   <span className="muted">
-                    {final.agree} of {final.answers} answers agree,{" "}
-                    {final.same_in_both_orders ? "the same in both speaker orders" : "but the answer changed with the speaker order"}
+                    {final.answers > 1
+                      ? `${final.agree} of ${final.answers} answers agree, ${
+                          final.same_in_both_orders === false ? "but the answer changed with the speaker order" : "the same in both speaker orders"
+                        }`
+                      : "the model's own confidence, from one answer"}
                   </span>
                 </td>
               </tr>
@@ -290,33 +296,40 @@ function Decision({ data }: { data: NonNullable<Results["decision"]> }) {
       ) : (
         <p className="empty">The model could not decide.</p>
       )}
-      <h3 className="subhead">What each feature group says on its own</h3>
+      <h3 className="subhead">Every combination of feature groups</h3>
       <div className="table-wrap">
         <table className="table">
           <thead>
             <tr>
               <th>Features given to the model</th>
+              <th>Groups</th>
               <th>Doctor</th>
               <th className="num">Confidence</th>
-              <th className="num">Answers agreeing</th>
-              <th>Same in both orders</th>
+              {repeated && <th className="num">Answers agreeing</th>}
+              {repeated && <th>Same in both orders</th>}
             </tr>
           </thead>
           <tbody>
             {data.combinations.map((c) => (
               <tr key={c.letters} className={c.letters === final?.letters ? "row-final" : undefined}>
                 <td>{c.groups.join(" + ")}</td>
+                <td className="muted">{GROUP_COUNT[c.groups.length] ?? c.groups.length}</td>
                 <td>
                   <SpeakerTag speaker={c.decision} />
                 </td>
                 <td className="num">{percent(c.confidence)}</td>
-                <td className="num">{c.agreement}</td>
-                <td>{c.same_in_both_orders ? "yes" : "no"}</td>
+                {repeated && <td className="num">{c.agreement}</td>}
+                {repeated && <td>{c.same_in_both_orders === null ? "–" : c.same_in_both_orders ? "yes" : "no"}</td>}
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      <p className="muted small">
+        {repeated
+          ? "Each combination was asked several times, in both speaker orders."
+          : "Each combination was asked once; the confidence is the model's own. The last row, with every group, is the final answer."}
+      </p>
     </>
   );
 }

@@ -85,7 +85,7 @@ export interface CombinationResult {
   agree: number;
   answers: number;
   agreement: string;
-  same_in_both_orders: boolean;
+  same_in_both_orders: boolean | null; // null: only one speaker order was asked
   mean_stated_confidence: number;
   reasons: string[];
 }
@@ -109,7 +109,8 @@ export interface Results {
   decision?: {
     model: string;
     temperature: number;
-    answers_per_order: number;
+    calls_per_combination?: number;
+    answers_per_order?: number;
     combinations: CombinationResult[];
     final: CombinationResult | null;
   };

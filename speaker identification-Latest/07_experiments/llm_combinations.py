@@ -34,6 +34,7 @@ from diarize import read_recordings  # noqa: E402
 import llm_decision as llm  # noqa: E402
 
 REPEATS = 3
+TEMPERATURE = 0.7          # > 0 so repeated answers can disagree; agreement is reported (the website uses 0)
 OUT = ROOT / "results" / "llm_sarvam"
 COMBINATIONS = ["".join(c) for n in range(1, 4) for c in combinations("SMV", n)] + ["transcript"]
 
@@ -54,7 +55,7 @@ def run_calls(rec_id, redo):
                     if call is None or call["answer"] is None or call.get("prompt_sha") != fingerprint:
                         answer, raw = None, ""
                         for _ in range(3):                           # retry if the answer can't be read
-                            answer, raw, seconds = llm.ask_sarvam(question)
+                            answer, raw, seconds = llm.ask_sarvam(question, TEMPERATURE)
                             if answer:
                                 break
                         y = "B" if x == "A" else "A"
@@ -102,7 +103,7 @@ def main():
         writer.writeheader()
         writer.writerows(rows)
     header = "| Recording | Groups given to the LLM | Doctor chosen | Correct | Confidence | Agreement | Same in both orders | Mean stated confidence |"
-    lines = [f"# LLM role decision ({llm.SARVAM_MODEL}, {REPEATS} answers per order, temperature {llm.TEMPERATURE})", "",
+    lines = [f"# LLM role decision ({llm.SARVAM_MODEL}, {REPEATS} answers per order, temperature {TEMPERATURE})", "",
              header, "|" + "---|" * 8]
     for r in rows:
         lines.append(f"| {r['recording']} | {r['groups']} | {r['decision']} | {'yes' if r['correct'] else 'no'} | {r['confidence']} | "

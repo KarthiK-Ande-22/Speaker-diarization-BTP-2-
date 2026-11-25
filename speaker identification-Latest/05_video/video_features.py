@@ -5,7 +5,7 @@ Output: data/<id>/video_faces.csv      every face found (10 frames per second): 
                                        mouth and eye movement, who is talking
         data/<id>/video_people.jpg     sample pictures of each person, to check the grouping by eye
         data/<id>/video_info.json      how the two people were linked to A and B, and how sure that is
-        data/<id>/video_features.csv   V1-V4: value for A, value for B, A - B
+        data/<id>/video_features.csv   V1-V3 and the link confidence: value for A, value for B, A - B
 
 1. Faces   : YuNet face detector on 10 frames per second (frames enlarged to 640 px wide).
 2. People  : SFace face fingerprints grouped into 2 people (k-means). Two faces in one frame are
@@ -57,11 +57,8 @@ PROMPTS = {
                     ["a photo of a person with nothing around the neck"]),
     "notes_or_computer": (["a photo of a person holding a clipboard or notes", "a photo of a person using a computer"],
                           ["a photo of a person with empty hands"]),
-    "patient_gown_or_bed": (["a photo of a person wearing a hospital gown", "a photo of a patient lying on a hospital bed"],
-                            ["a photo of a person in everyday clothes sitting on a chair"]),
 }
-EXPECTED = {"medical_clothing": "doctor", "stethoscope": "doctor", "notes_or_computer": "doctor",
-            "patient_gown_or_bed": "patient"}
+EXPECTED = {"medical_clothing": "doctor", "stethoscope": "doctor", "notes_or_computer": "doctor"}
 SPEAKERS = ("A", "B")
 
 

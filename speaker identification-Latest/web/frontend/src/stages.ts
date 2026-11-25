@@ -40,15 +40,15 @@ export const STAGE_INFO: Record<string, { icon: LucideIcon; description: string;
   },
   video: {
     icon: Video,
-    description: "Faces are found, grouped into two people and matched to the voices. An image model checks for a white coat, a stethoscope, notes, and a hospital gown or bed.",
-    outputs: "4 features and how sure the face–voice match is",
+    description: "Faces are found, grouped into two people and matched to the voices. An image model checks for a white coat, a stethoscope, and notes or a computer.",
+    outputs: "3 features and how sure the face–voice match is",
     tools: ["YuNet", "SFace", "CLIP"],
   },
   decision: {
     icon: Scale,
     description:
-      "Sarvam's LLM reads the extracted features (not the recording) and says who is the doctor. It is asked several times, in both speaker orders.",
-    outputs: "doctor, patient, confidence and the model's reasons",
+      "Sarvam's LLM reads the extracted features (not the recording) and says who is the doctor. It is asked once for every combination of feature groups: each alone, each pair, and all three, which gives the final answer.",
+    outputs: "doctor, patient, confidence, the model's reasons, and the answer for every combination",
     tools: ["Sarvam LLM"],
   },
 };
